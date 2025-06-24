@@ -4,6 +4,9 @@ import numpy as np
 import pygame
 import pygame_widgets
 
+import tkinter as tk
+from tkinter import scrolledtext
+
 
 def play_solution(solution, game, widgets, show_solution, moves):
 	for move in solution:
@@ -191,3 +194,35 @@ def can_move(state, shape, player_pos, move):
 			new_state[curr1d] = '-' if new_state[curr1d] == '*' else 'X'
 			move_cost = 0 if new_state[boxtarget1d] == '$' else 2
 	return ''.join(new_state), move_cost
+
+
+
+def show_benchmark_popup(benchmark_results, level):
+    window = tk.Tk()
+    window.title("Benchmark Results")
+    window.geometry("500x800")
+    window.title("Algorithm Benchmark Results")
+    window.configure(bg="#2e3b4e")  # dark blue-gray background
+    	
+    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, 
+                                          	font=("Courier New", 15),
+    										bg="#1e1e1e",       # background color
+    										fg="#d4d4d4",       # text color
+    										borderwidth=0,)
+    
+    text_area.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+    text_area.insert(tk.END, f"Benchmark Results for Level: {level}\n")
+    for method, data in benchmark_results.items():
+        entry = (
+            f"{method}\n"
+            f"  Moves        : {data['moves']}\n"
+            f"  Depth        : {data['depth']}\n"
+            f"  Nodes        : {data['node expanded']}\n"
+            f"  Max Frontier : {data['max frontier']}\n"
+            f"  Time         : {data['runtime']:.4f} s\n"
+            f"  Outcome      : {data['Outcome']}\n"
+            f"{'-'*38}\n"
+        )
+        text_area.insert(tk.END, entry)
+
+    window.mainloop()

@@ -1,17 +1,19 @@
 import random
+import threading
 import time
 
 import pygame
 import pygame_widgets
 
 from src.Algorithm.astar import solve_astar
+from src.Algorithm.benchmark_method import solve_with_benchmark_method
 from src.Algorithm.bfs import solve_bfs
 from src.Algorithm.ucs import solve_USC
 from src.Algorithm.gbfs import solve_gbfs
 from src.events import *
 from src.game import Game
 from src.generator import generate
-from src.utils import play_solution
+from src.utils import play_solution, show_benchmark_popup
 from src.widgets import sidebar_widgets
 
 random.seed(6)
@@ -224,6 +226,39 @@ def play_game(window, level=1, random_game=False, random_seed=None, **widgets):
 						('Deadlock Found!' if depth < 0 else f'Depth {depth}'), 
 						20,
 					)
+     
+			elif event.type == BENCHMARK_ALL_METHOD:
+				# Solve puzzle using all methods and gather benchmark data
+				benchmark_results = solve_with_benchmark_method(
+					game.get_matrix(),
+					visualizer=widgets['toggle'].getValue(),
+					heuristic='manhattan',
+				)
+				# Show benchmark summary in a popup (run in background thread)
+				threading.Thread(
+					target=show_benchmark_popup,
+					args=(benchmark_results,level,),
+					daemon=True
+				).start()
+				for method, result in benchmark_results.items():
+					# Reset game state before visualizing each solution
+					game = Game(level=level, window=window)
+					# Clear the screen
+					window.fill((0, 0, 0))
+					game.floor_group.draw(window)
+					game.goal_group.draw(window)
+					game.object_group.draw(window)
+					pygame.display.update()
+					# Show method label on path widget
+					widgets['paths'].reset(f"{method} Solution Found!\n")
+					widgets['paths'].draw()
+					pygame.display.update()
+					time.sleep(1)  # brief pause to let user see label
+					# Play the solution animation
+					play_solution(result['solution'], game, widgets, show_solution=True, moves=0)
+					# Optional: wait between methods
+					time.sleep(1)
+   
 			elif event.type == pygame.KEYDOWN:
 				if event.key in (pygame.K_d, pygame.K_RIGHT):
 					moves += game.player.update(key='R')

@@ -59,7 +59,7 @@ def USC(matrix, player_pos, widget=None, visualizer=False, dict=None):
                     dict["depth"] = depth + 1
                     dict["node expanded"] = count
                     dict["max frontier"] = max_frontier
-                    dict["Outcome"] = 'Failure'
+                    dict["Outcome"] = 'success'
                     dict["solution"] = path + direction[move]
                 if widget and visualizer:
                     widget.solved = True
