@@ -6,7 +6,7 @@ import pygame
 from ..utils import can_move, get_state, is_deadlock, is_solved
 
 
-def USC(matrix, player_pos, widget=None, visualizer=False):
+def USC(matrix, player_pos, widget=None, visualizer=False, dict=None):
     shape = matrix.shape
     initial_state = get_state(matrix)
     initial_cost = 0 
@@ -23,6 +23,8 @@ def USC(matrix, player_pos, widget=None, visualizer=False):
         (0, -1): 'L',
         (0, 1): 'R'
     }
+    count = 0
+    max_frontier = 0
 
     while heap:
         if widget:
@@ -30,6 +32,9 @@ def USC(matrix, player_pos, widget=None, visualizer=False):
 
         path_cost, state, pos, depth, path = heappop(heap)
         seen.add(state)
+        count += 1
+        if max_frontier < len(heap):
+            max_frontier = len(heap)
         
         for move in moves:
             new_state, move_cost = can_move(state, shape, pos, move)
@@ -48,7 +53,14 @@ def USC(matrix, player_pos, widget=None, visualizer=False):
                 path + direction[move],
             ))
             
-            if is_solved(new_state):
+            if is_solved(new_state):                
+                if dict is not None:
+                    dict["moves"] = len(path + direction[move])
+                    dict["depth"] = depth + 1
+                    dict["node expanded"] = count
+                    dict["max frontier"] = max_frontier
+                    dict["Outcome"] = 'Failure'
+                    dict["solution"] = path + direction[move]
                 if widget and visualizer:
                     widget.solved = True
                     widget.set_text(f'UCS Solution Found!\n{path + direction[move]}', 20)
@@ -57,13 +69,20 @@ def USC(matrix, player_pos, widget=None, visualizer=False):
             if widget and visualizer:
                 widget.set_text(f'USC Solution Depth: {depth + 1}\n{path + direction[move]}', 20)
                 pygame.display.update()
+        if dict is not None:
+            dict["moves"] = len(path + direction[move])
+            dict["depth"] = depth + 1
+            dict["node expanded"] = count
+            dict["max frontier"] = max_frontier
+            dict["Outcome"] = 'Failure'
+            dict["solution"] = path + direction[move]
     if widget and visualizer:
         widget.set_text('UCS Solution Not Found!\nDepth {depth + 1}', 20)
         pygame.display.update()
     return (None, -1)
 
-def solve_USC(puzzle, widget=None, visualizer=False):
+def solve_USC(puzzle, widget=None, visualizer=False, benchmark_dict=None):
     matrix = puzzle
     where = np.where((matrix == '*') | (matrix == '%'))
     player_pos = where[0][0], where[1][0]
-    return USC(matrix, player_pos, widget, visualizer)
+    return USC(matrix, player_pos, widget, visualizer, dict=benchmark_dict)
