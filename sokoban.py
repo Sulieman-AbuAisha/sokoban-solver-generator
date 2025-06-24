@@ -6,6 +6,8 @@ import pygame_widgets
 
 from src.Algorithm.astar import solve_astar
 from src.Algorithm.bfs import solve_bfs
+from src.Algorithm.ucs import solve_USC
+from src.Algorithm.gbfs import solve_gbfs
 from src.events import *
 from src.game import Game
 from src.generator import generate
@@ -170,6 +172,55 @@ def play_game(window, level=1, random_game=False, random_seed=None, **widgets):
 					widgets['paths'].solved = False
 					widgets['paths'].set_text(
 						'[Dijkstra] Solution Not Found!\n' + 
+						('Deadlock Found!' if depth < 0 else f'Depth {depth}'), 
+						20,
+					)
+			elif event.type == SOLVE_GBFS_EVENT:
+				print('Finding a solution for the puzzle with GBFS\n')
+				widgets['paths'].reset('Solving with [GBFS]')
+				show_solution = True
+				start = time.time()
+				solution, depth = solve_gbfs(
+					game.get_matrix(), 
+					widget=widgets['paths'], 
+					visualizer=widgets['toggle'].getValue(),
+					heuristic='manhattan',  # or whatever heuristic you prefer
+				)
+				runtime = round(time.time() - start, 5)
+				if solution:
+					widgets['paths'].solved = True
+					widgets['paths'].transparency = True
+					widgets['paths'].set_text(
+						f'[GBFS] Solution Found in {runtime}s!\n{solution}',
+						20,)
+					moves = play_solution(solution, game, widgets, show_solution, moves)
+				else:
+					widgets['paths'].solved = False
+					widgets['paths'].set_text(
+						'[GBFS] Solution Not Found!\n' + 
+						('Deadlock Found!' if depth < 0 else f'Depth {depth}'), 20,)
+			elif event.type == SOLVE_USC_EVENT:
+				print('Finding a solution for the puzzle with USC\n')
+				widgets['paths'].reset('Solving with [USC]')
+				show_solution = True
+				start = time.time()
+				solution, depth = solve_USC(
+				game.get_matrix(), 
+				widget=widgets['paths'], 
+				visualizer=widgets['toggle'].getValue(),)
+				runtime = round(time.time() - start, 5)
+				if solution:
+					widgets['paths'].solved = True
+					widgets['paths'].transparency = True
+					widgets['paths'].set_text(
+						f'[USC] Solution Found in {runtime}s!\n{solution}',
+						20,
+						)
+					moves = play_solution(solution, game, widgets, show_solution, moves)
+				else:
+					widgets['paths'].solved = False
+					widgets['paths'].set_text(
+						'[USC] Solution Not Found!\n' + 
 						('Deadlock Found!' if depth < 0 else f'Depth {depth}'), 
 						20,
 					)
