@@ -4,7 +4,7 @@ from collections import deque
 import numpy as np
 import pygame
 
-from .utils import can_move, get_state, is_deadlock, is_solved, print_state
+from ..utils import can_move, get_state, is_deadlock, is_solved, print_state
 
 
 def bfs(matrix, player_pos, widget=None, visualizer=False):

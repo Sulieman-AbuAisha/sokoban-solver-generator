@@ -1,7 +1,7 @@
 import os
 
-from src.astar import solve_astar
-from src.bfs import solve_bfs
+from src.Algorithm.astar import solve_astar
+from src.Algorithm.bfs import solve_bfs
 from src.utils import is_solved
 from tests.test_sokoban_mixin import SokobanMixin
 

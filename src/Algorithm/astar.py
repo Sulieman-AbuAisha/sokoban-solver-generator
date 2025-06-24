@@ -5,7 +5,7 @@ from heapq import heappop, heappush
 import numpy as np
 import pygame
 
-from .utils import (can_move, dijkstra_sum, get_state, is_deadlock, is_solved,
+from ..utils import (can_move, dijkstra_sum, get_state, is_deadlock, is_solved,
                     manhattan_sum, print_state)
 
 

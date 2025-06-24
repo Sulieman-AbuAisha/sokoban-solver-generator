@@ -32,8 +32,8 @@ def sidebar_widgets(window):
 		onClick=lambda: pygame.event.post(pygame.event.Event(RANDOM_GAME_EVENT)),
 		borderColor='black', borderThickness=2,
 	)
-	visualizer = Label(window, f'Visualize', 1055, 450, 16)
-	toggle = Toggle(window, 1160, 455, 18, 22, handleRadius=11)
+	visualizer = Label(window, f'Visualize', 1055, 600, 16)
+	toggle = Toggle(window, 1160, 600, 18, 22, handleRadius=11)
 	bfs_button = Button(
 		window, 1055, 280, 130, 40, text='Solve BFS', radius=5,
 		font=pygame.font.SysFont('Verdana', 18, bold=True),
@@ -41,15 +41,33 @@ def sidebar_widgets(window):
 		borderColor='black', borderThickness=2,
 	)
 	astarman_button = Button(
-		window, 1055, 340, 130, 40, text='A* Manhattan', radius=5,
+		window, 1055, 330, 130, 40, text='A* Manhattan', radius=5,
 		font=pygame.font.SysFont('Verdana', 14, bold=True),
 		onClick=lambda: pygame.event.post(pygame.event.Event(SOLVE_ASTARMAN_EVENT)),
 		borderColor='black', borderThickness=2,
 	)
 	dijk_button = Button(
-		window, 1055, 400, 130, 40, text='Dijkstra', radius=5,
+		window, 1055, 380, 130, 40, text='Dijkstra', radius=5,
 		font=pygame.font.SysFont('Verdana', 14, bold=True),
 		onClick=lambda: pygame.event.post(pygame.event.Event(SOLVE_DIJKSTRA_EVENT)),
+		borderColor='black', borderThickness=2,
+	)
+	gbfs_button = Button(
+		window, 1055, 430, 130, 40, text='GBFS', radius=5,
+		font=pygame.font.SysFont('Verdana', 14, bold=True),
+		onClick=lambda: pygame.event.post(pygame.event.Event(SOLVE_GBFS_EVENT)),
+		borderColor='black', borderThickness=2,
+	)
+	usc_button = Button(
+		window, 1055, 480, 130, 40, text='USC', radius=5,
+		font=pygame.font.SysFont('Verdana', 14, bold=True),
+		onClick=lambda: pygame.event.post(pygame.event.Event(SOLVE_USC_EVENT)),
+		borderColor='black', borderThickness=2,
+	)
+	benchmark_button = Button(
+		window, 1055, 540, 130, 40, text='benchmark', radius=5,
+		font=pygame.font.SysFont('Verdana', 14, bold=True),
+		onClick=lambda: pygame.event.post(pygame.event.Event(BENCHMARK_ALL_METHOD)),
 		borderColor='black', borderThickness=2,
 	)
 	seed = Label(window, f'Seed', 1055, 190, 16)
@@ -62,6 +80,7 @@ def sidebar_widgets(window):
 	)
 	moves = Label(window, f' Moves - 0 ', 1055, 75, 20)
 	paths = MultilineLabel(window, f'Solution Depth: 0\n', 64, 0, 20)
+	benchmark_line = MultilineLabel(window, f'Benchmark Results:\n', 64, 640, 40)
 	level_clear = LevelClear(window, f'Level Clear!')
 	return {
 		'restart': restart,
@@ -79,6 +98,10 @@ def sidebar_widgets(window):
 		'seed': seed,
 		'astarman': astarman_button,
 		'dijkstra': dijk_button,
+  		'GBFS': gbfs_button,
+		'USC': usc_button,
+		'benchmark_line': benchmark_line,
+		'benchmark': benchmark_button,
 	}
 
 

@@ -4,8 +4,8 @@ import time
 import pygame
 import pygame_widgets
 
-from src.astar import solve_astar
-from src.bfs import solve_bfs
+from src.Algorithm.astar import solve_astar
+from src.Algorithm.bfs import solve_bfs
 from src.events import *
 from src.game import Game
 from src.generator import generate
