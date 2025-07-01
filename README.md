@@ -1,5 +1,9 @@
 # 📦 Sokoban Solver and Generator
 
+### 👨‍🎓 Project Authors
+- Zakaria AbuAisha (ID: 2210144900)  
+- Sulieman AbuAisha (ID: 2210145041)
+
 🗒️ [README pt-BR](https://github.com/xbandrade/sokoban-solver-generator/blob/main/README-pt-BR.md)
 
 ▶️ Video showing the game mechanics, the generator and the solver: [Sokoban Generator and Solver](https://www.youtube.com/watch?v=l0BHKkoViII)
