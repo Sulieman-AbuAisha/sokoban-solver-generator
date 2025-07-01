@@ -72,6 +72,10 @@ All three implementations check for possible deadlocks (states that are impossib
 - `A* Manhattan` Solve the current puzzle using A* with Manhattan Distance heuristic
 - `Dijkstra` Solve the current puzzle using A* with Dijkstra distance heuristic
 - `Visualize` Display the process of generating the puzzle and show the current best path for the solutions
+### ❕ New In This Fork 
+- `UCS` Solve the current puzzle using Uniform-Cost Search.
+- `GBFS` Solve the current puzzle using Greedy-Best-First Search with Manhattan Distance heuristic
+- `Benchmark` Shows a comparison between search algorithms that has been implemented for this project according to (time, maximum frontier, failed or succeeded ...etc)
 
 
 ### ❕ Unit Tests
